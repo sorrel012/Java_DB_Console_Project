@@ -1,7 +1,6 @@
 package com.stock;
 
 import com.stock.data.TradingDataService;
-import com.stock.view.Main;
 
 /**
  * 모의 주식 시스템을 구현한 메인 클래스
@@ -10,12 +9,12 @@ import com.stock.view.Main;
  */
 public class TradingSystem {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		TradingDataService.createStockData();
+    TradingDataService.createStockData();
 
-		Main.mainMenu();
+//    Main.mainMenu();
 
-	}
+  }
 
 }

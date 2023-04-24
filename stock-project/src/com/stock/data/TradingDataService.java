@@ -1,7 +1,5 @@
 package com.stock.data;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -14,80 +12,65 @@ import org.jsoup.select.Elements;
  *
  */
 public class TradingDataService {
-	
-	private static final String KOSPI_RISE = "https://finance.naver.com/sise/sise_rise.naver"; // 코스피 상승
-	private static final String KOSPI_FALL = "https://finance.naver.com/sise/sise_fall.naver"; // 코스피 하락
-	private static final String KOSPI_STEADY = "https://finance.naver.com/sise/sise_steady.naver"; // 코스피 보합
-	private static final String KOSDAQ_RISE = "https://finance.naver.com/sise/sise_rise.naver?sosok=1"; // 코스닥 상승
-	private static final String KOSDAQ_FALL = "https://finance.naver.com/sise/sise_fall.naver?sosok=1"; // 코스닥 하락
-	private static final String KOSDAQ_STEADY = "https://finance.naver.com/sise/sise_steady.naver?sosok=1"; // 코스닥 보합
-	
-	public static final String KOSPI_RISE_LIST = ".\\dat\\stockprice\\kospiRiseList.txt";
-	public static final String KOSPI_FALL_LIST = ".\\dat\\stockprice\\kospiFallList.txt";
-	public static final String KOSPI_STEADY_LIST = ".\\dat\\stockprice\\kospiSteadyList.txt";
-	public static final String KOSDAQ_RISE_LIST = ".\\dat\\stockprice\\kosdaqRiseList.txt";
-	public static final String KOSDAQ_FALL_LIST = ".\\dat\\stockprice\\kosdaqFallList.txt";
-	public static final String KOSDAQ_STEADY_LIST = ".\\dat\\stockprice\\kosdaqSteadyList.txt";
-	
-	/**
-	 * 코스피, 코스닥의 변동률을 읽어오는 매소드
-	 * @see #createAll(String, String)
-	 */
-	public static void createStockData() {
-		
-		createAll(KOSPI_RISE_LIST, KOSPI_RISE);
-		createAll(KOSPI_FALL_LIST, KOSPI_FALL);
-		createAll(KOSPI_STEADY_LIST, KOSPI_STEADY);
-		createAll(KOSDAQ_RISE_LIST, KOSDAQ_RISE);
-		createAll(KOSDAQ_FALL_LIST, KOSDAQ_FALL);
-		createAll(KOSDAQ_STEADY_LIST, KOSDAQ_STEADY);
-		   
-	}
-	
-	/**
-	 * 증권 시세를 불러와서 데이터 파일에 저장하는 메소드
-	 * @param fileUrl 증권 사이트 주소
-	 * @param stockUrl 저장할 데이터 파일 경로
-	 */
-	private static void createAll(String fileUrl, String stockUrl) {
 
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(fileUrl));
+    private static final String KOSPI = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=0&page="; // 코스피
+    private static final String KOSDAQ = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=1&page="; // 코스닥
 
-			Document doc = Jsoup.connect(stockUrl).get(); // 웹에서 내용을 가져온다
+    /**
+     * 코스피, 코스닥의 변동률을 읽어오는 매소드
+     * @see #createAll(String, String)
+     */
+    public static void createStockData() {
+        readStockData(KOSPI, 41);
+//        readStockData(KOSDAQ, 33);
+    }
 
-			// 코스피 지수 값 추출
-			Elements kospiRise = doc.select("td");
-			List<String> name = kospiRise.eachText(); // index 30부터 번호 시작
+    /**
+     * 증권 시세를 불러와서 데이터베이스에 저장하는 메소드
+     * @param stockUrl 증권 사이트 주소
+     * @param pageNum 읽어올 페이지 수
+     */
+    private static void readStockData(String stockUrl, int pageNum) {
 
-			for (int i = 0; i < 30; i++) { // 목록이 index0이 되도록 함
-				name.remove(name.get(0));
-			}
+        try {
 
-			int count = 0;
-			String line = "";
+            for(int i = 1; i <= pageNum; i++) {
+                
+                Document doc = Jsoup.connect(stockUrl+pageNum).get(); // 웹에서 내용을 가져온다
 
-			for (int i = 0; i < name.size(); i++) {
+                // 페이지 전체 읽어오기
+                Elements stockData = doc.select("td");
+                List<String> name = stockData.eachText(); // index 30부터 번호 시작
 
-				if (count < 11) {
+                for (int j = 0; j < 30; j++) { // 목록이 index0이 되도록 함
+                    name.remove(name.get(0));
+                }
 
-					line = String.format("%s■", name.get(i));
-					count++;
-				} else if (count == 11) {
-					line = String.format("%s\n", name.get(i));
-					count = 0;
-				}
+                if(i == 1) {
+                    int nameSize = name.size();
+                    
+                    for (int j = nameSize-1; j > nameSize-13; j--) {
+                        name.remove(j);
+                    }
+                    
+                } else {
+                    int idx = name.indexOf("맨앞");
+                    for (int j = name.size()-1; j >= idx; j--) {
+                        name.remove(j);
+                    }
+                    
+                }
 
-				writer.write(line);
+                for(int j = 0; j < name.size(); j++) {
+                    System.out.println(j + ": " + name.get(j));
+                }
+                
+            }
 
-			}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-			writer.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
+    }
 
 }
