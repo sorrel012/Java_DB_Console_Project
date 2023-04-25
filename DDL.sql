@@ -1,8 +1,8 @@
 CREATE TABLE tblStock (
 	stock_seq	number	NOT NULL,
 	member_seq	number	NOT NULL,
-	Field	varchar2(500)	NULL,
-	Field2	number	NULL
+	stockName	varchar2(500)	NULL,
+	volume	number	NULL
 );
 
 CREATE TABLE tblKospi (
@@ -22,7 +22,7 @@ CREATE TABLE tblKosdaq (
 	rate	varchar2(100)	NULL,
 	volume	number	NULL,
 	per	varchar2(100)	NULL,
-	Field5	varchar2(100)	NULL
+	roe	varchar2(100)	NULL
 );
 
 CREATE TABLE tblMember (
