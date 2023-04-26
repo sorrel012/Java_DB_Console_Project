@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.stock.service.signup.Login;
-import com.stock.view.Main;
-import com.stock.view.Menu;
-import com.stock.view.UserMenu;
 
 /**
  * 주식 정보를 저장하는 클래스
@@ -71,7 +68,7 @@ public class TradeData {
 	}
 	
 	/**
-	 * 보유한 모든 주식의 총 가격 정보를 만드는 메소드 
+	 * 보유한 모든 주식의 총 가격 정보를 만드는 메소드
 	 */
 	public int getTotalAssets() {
 
@@ -164,7 +161,7 @@ public class TradeData {
 	}
 	
 	/**
-	 * 매수 & 매도 히스토리를 텍스트 파일로 생성하는 메소드 
+	 * 매수 & 매도 히스토리를 텍스트 파일로 생성하는 메소드
 	 */
 	public static void createHistory(TradeData td, String type) {
 		
@@ -197,7 +194,7 @@ public class TradeData {
 	}
 	
 	/**
-	 * 매수한 주식의 정보를 텍스트 파일로 생성하는 메소드 
+	 * 매수한 주식의 정보를 텍스트 파일로 생성하는 메소드
 	 */
 	public static void createBuyList(TradeData td, String type) {
 		
@@ -247,7 +244,7 @@ public class TradeData {
 	}
 	
 	/**
-	 * 매도한 주식정보를 매수 정보가 들어있는 텍스트파일에서 지우는 메소드 
+	 * 매도한 주식정보를 매수 정보가 들어있는 텍스트파일에서 지우는 메소드
 	 */
 	public static void removeBuyList(TradeData td, String type) {
 

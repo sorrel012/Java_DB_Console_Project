@@ -1,7 +1,5 @@
 package com.stock.data;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,43 +11,6 @@ import java.util.List;
 public class AllStockList {
    
    private static List<List<String>> result = new ArrayList<List<String>>();
-
-   private static void searchStockList(String stockPath) {
-
-      try {
-
-         BufferedReader reader = new BufferedReader(new FileReader(stockPath));
-
-         String line = "";
-
-         while((line = reader.readLine()) != null) {
-
-            String[] tmp = line.split("■");
-            List<String> info = new ArrayList<String>();
-            	
-            	info.add(tmp[0]);
-            	info.add(tmp[1]);
-            	info.add(tmp[2]);
-            	info.add(tmp[3]);
-            	info.add(tmp[4]);
-            	info.add(tmp[5]);
-            	info.add(tmp[6]);
-            	info.add(tmp[7]);
-            	info.add(tmp[8]);
-            	info.add(tmp[9]);
-            	info.add(tmp[10]);
-            	info.add(tmp[11]);
-            
-            	result.add(info);
-         }
-
-         reader.close();
-
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-
-   }
    
    public static List<List<String>> allStockList() {
 
