@@ -1,12 +1,16 @@
 package com.stock.data;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+
+import com.db.DBUtil;
 /**
  * 국내 증시 사이트에서 시세 정보를 읽어오는 클래스
  * @author 6조
@@ -24,26 +28,40 @@ public class TradingDataService {
      * @see #createAll(String, String)
      */
     public static void createStockData() {
+
+        try {
+            deleteStockData();
+            storeStockData(KOSPI, 41);
+            storeStockData(KOSDAQ, 33);
+          
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
-        readStockData(KOSPI_LIST, KOSPI,41);
     }
 
     /**
      * 증권 시세를 불러와서 데이터베이스에 저장하는 메소드
      * @param stockUrl 증권 사이트 주소
      * @param pageNum 읽어올 페이지 수
+     * @throws SQLException
+     * @throws NumberFormatException
+     * @throws IOException
      */
-    private static void readStockData(String fileUrl, String stockUrl, int pageNum) {
-        
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileUrl));
-            String line = "";
+    private static void storeStockData(String stockUrl, int pageNum) throws NumberFormatException, SQLException, IOException {
             
-            for(int i = 1; i <= pageNum; i++) {
-                
-                Document doc = Jsoup.connect(stockUrl+i).get(); // 웹에서 내용을 가져온다
+            Connection con = DBUtil.open();
+            con.setAutoCommit(false);
+            PreparedStatement pstat = con.prepareStatement("INSERT INTO tblKospi VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-                // 페이지 전체 읽어오기
+            if(stockUrl.equals(KOSDAQ)) {
+                pstat = con.prepareStatement("INSERT INTO tblKosdaq VALUES (?, ?, ?, ?, ?, ?, ?)");
+            }
+            
+            for (int i = 1; i <= pageNum; i++) {
+                Document doc = Jsoup.connect(KOSPI + i).get(); // 웹에서 내용을 가져온다
+
+             // 페이지 전체 읽어오기
                 Elements stockData = doc.select("td");
                 List<String> name = stockData.eachText(); // index 30부터 번호 시작
 
@@ -103,18 +121,52 @@ public class TradingDataService {
                         }
 
                     }
-                    line += String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\n", seq, stockName,nowPrice,rate,volume,per,roe);
-                    
-                }
-                
-            }
             
-            writer.write(line);
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    // 데이터베이스에 저장
+                    pstat.setInt(1, Integer.parseInt(seq));
+                    pstat.setString(2, stockName);
+                    pstat.setInt(3, Integer.parseInt(nowPrice));
+                    pstat.setString(4, rate);
+                    pstat.setInt(5, Integer.parseInt(volume));
+                    pstat.setString(6, per);
+                    pstat.setString(7, roe);
 
+                    pstat.executeUpdate();
+                    
+                } //j
+                con.commit();
+                
+            }//i
+            
+            
+            pstat.close();
+            con.close();
+        
     }
+    
+    /**
+     * 기존 주식 테이블의 데이터를 지워주는 메소드
+     * @param stockUrl
+     * @param pageNum
+     * @throws SQLException
+     */
+    private static void deleteStockData() throws SQLException {
+        
+        Connection con = DBUtil.open();
+        
+        String sql = "DELETE FROM TBLKOSPI";
+        PreparedStatement st = con.prepareStatement(sql);
+        
+        st.executeUpdate();
+        
+        sql = "DELETE FROM TBLKOSDAQ";
+        st = con.prepareStatement(sql);
 
+        st.executeUpdate();
+        
+        st.close();
+        con.close();
+        
+    }
+    
 }
