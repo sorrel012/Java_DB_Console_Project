@@ -15,7 +15,7 @@ import com.db.DBUtil;
  */
 public class AllStockList {
    
-   private static List<List<String>> result = new ArrayList<List<String>>();
+   private static List<List<String>> result;
 
    private static void readAllStockList(String stockSort) {
        
@@ -39,18 +39,31 @@ public class AllStockList {
           rs = st.executeQuery(sql);
           
           while(rs.next()) {
+              
+              List<String> tmp = new ArrayList<>();
+              
               String seq ="";
               if(stockSort.equals("kospi")) {
-                  
+                  seq = rs.getString("KOSPI_SEQ");
               } else if(stockSort.equals("kosdaq")) {
-                  
+                  seq = rs.getString("KOSDAQ_SEQ");
               }
-              String stockName ="";
-              String nowPrice ="";
-              String rate ="";
-              String volume ="";
-              String per ="";
-              String roe ="";
+              String stockName = rs.getString("STOCKNAME");
+              String nowPrice = rs.getString("NOWPRICE");
+              String rate = rs.getString("RATE");
+              String volume = rs.getString("VOLUME");
+              String per = rs.getString("PER");
+              String roe = rs.getString("ROE");
+              
+              tmp.add(seq);
+              tmp.add(stockName);
+              tmp.add(nowPrice);
+              tmp.add(rate);
+              tmp.add(volume);
+              tmp.add(per);
+              tmp.add(roe);
+              
+              result.add(tmp);
           }
          
 
@@ -61,11 +74,14 @@ public class AllStockList {
    }
    
    public static List<List<String>> storeAllStockList() {
-
-      searchStockList("kospi");
-      searchStockList("kosdaq");
+       
+       result = new ArrayList<List<String>>();
       
-      return result;
+       readAllStockList("kospi");
+       readAllStockList("kosdaq");
+
+       
+       return result;
    }
       
 }
