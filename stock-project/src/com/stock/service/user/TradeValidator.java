@@ -3,11 +3,11 @@ package com.stock.service.user;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Arrays;
+import java.util.List;
 
+import com.stock.data.AllStockList;
 import com.stock.data.TradeData;
 import com.stock.service.signup.Login;
-import com.stock.view.Menu;
 import com.stock.view.TradeView;
 import com.stock.view.UserMenu;
 
@@ -17,171 +17,150 @@ import com.stock.view.UserMenu;
  *
  */
 public class TradeValidator {
-	
-	/**
-	 * 존재하는 주식명인지 체크하는 메소드 
-	 */
-	public static boolean checkStockName(TradeData td) {
 
-		boolean result = false;
+    /**
+     * 존재하는 주식명인지 체크하는 메소드
+     */
+    public static boolean checkStockName(TradeData td) {
 
-		td.readAll(); // 모든 텍스트에 있는 주식명 읽어오기
+        boolean result = false;
 
-		for (int i = 0; i < td.getList().size(); i++) {
+        List<List<String>> allStocks = AllStockList.storeAllStockList();
 
-			try {
+        for (List<String> tmpList : allStocks) {
 
-				BufferedReader br = new BufferedReader(new FileReader(td.getList().get(i)));
+            if (tmpList.get(1).equals(td.getStockName())) {
+                td.setPriceNow(tmpList.get(2));
+                result = true;
+                break;
+            }
 
-				String line = null;
+        }
 
-				while ((line = br.readLine()) != null) {
 
-					String[] temp = line.split("■");
-					
-					for (int j = 0; j < temp.length; j++) {
-						
-						if (temp[1].equals(td.getStockName())) {
-							td.setPriceNow(temp[2]);
-							result = true;
-							break;
-						}
-						
-					}
+        if (!result) {
+            System.out.println("\t\t\t\t\t\t\t\t==========================================================");
+            System.out.println("\t\t\t\t\t\t\t\t존재하지 않는 주식명을 입력하셨습니다.");
+            System.out.println("\t\t\t\t\t\t\t\t회원 메뉴로 이동합니다.");
+            UserMenu.UI();
+        }
 
-				} //while
+        return result;
 
-				br.close();
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+    }
 
-		}//for
-		
-		if (!result) {
-			System.out.println("\t\t\t\t\t\t\t\t==========================================================");
-			System.out.println("\t\t\t\t\t\t\t\t존재하지 않는 주식명을 입력하셨습니다.");
-			System.out.println("\t\t\t\t\t\t\t\t회원 메뉴로 이동합니다.");
-			UserMenu.UI();
-		}
-		
-		return result;
+    /**
+     * 매수 가능한 수량인지 체크하는 메소드
+     */
+    public static boolean checkOrderQuantity(TradeData td) {
 
-	}
-	
-	/**
-	 * 매수 가능한 수량인지 체크하는 메소드 
-	 */
-	public static boolean checkOrderQuantity(TradeData td) {
-		
-		boolean result = false;
-		
-		int moneyNow = Login.loginUser.getAvailableAssets();
-		int priceNow = td.getTotalPrice();
-		
-		if (moneyNow >= priceNow) {
-			result = true;
-		} else {
-			System.out.println("\t\t\t\t\t\t\t\t==========================================================");
-			System.out.println("\t\t\t\t\t\t\t\t보유 가용 자산이 부족합니다.");
-			System.out.println("\t\t\t\t\t\t\t\t매수량을 다시 입력해 주세요");
-			TradeView.showBuyScreen();
-		}
-		
-		return result;
-		
-	}
-	
-	/**
-	 * 보유중인 주식인지 확인하는 메소드 
-	 */
-	public static boolean hasStock(TradeData td) {
-		
-		boolean result = false;
-		
-		try {
-			
-			File filePath = new File(TradeData.FILEPATH);
-			
-			if (filePath.exists()) {
-				
-				BufferedReader br = new BufferedReader(new FileReader(TradeData.FILEPATH));
-				
-				String line = null;
-				
-				while ((line = br.readLine()) != null) {
-					
-					String[] temp = line.split("■");
-					
-					for (int i = 0; i < temp.length; i++) {
-						
-						if (temp[0].equals(td.getStockName())) {
-							result = true;
-							break;
-						}
-						
-					}
-					
-				}
-				
-			} else {
-				System.out.println("\t\t\t\t\t\t\t\t\t\t\t매수 내역이 없습니다.");
-				System.out.println("\t\t\t\t\t\t\t\t\t\t\t회원 메뉴로 이동합니다.");
-				UserMenu.UI();
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * 판매 수량이 보유 수량을 초과하는지 확인하는 메소드
-	 */
-	public static boolean checkSellQuantity(TradeData td) {
-		
-		boolean result = false;
-		
-		try {
-			
-			BufferedReader br = new BufferedReader(new FileReader(TradeData.FILEPATH));
-			
-			String line = null;
-			
-			while ((line = br.readLine()) != null) {
-				
-				String[] temp = line.split("■");
-				
-				for (int i = 0; i < temp.length; i++) {
-					
-					if (temp[0].equals(td.getStockName())) {
-						if (Integer.parseInt(temp[1]) >= Integer.parseInt(td.getVolume())) {
-							result = true;
-							break;
-						}
-					}
-					
-				}
-				
-			}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if (!result) {
-			System.out.println("\t\t\t\t\t\t\t\t==========================================================");
-			System.out.println("\t\t\t\t\t\t\t\t보유 중인 주식 수량을 초과하였습니다.");
-			System.out.println("\t\t\t\t\t\t\t\t매도 수량을 다시 입력해 주세요");
-			TradeView.showSellScreen();
-		}
-		
-		return result;
-		
-	}
+        boolean result = false;
+
+        int moneyNow = Login.loginUser.getAvailableAssets();
+        int priceNow = td.getTotalPrice();
+
+        if (moneyNow >= priceNow) {
+            result = true;
+        } else {
+            System.out.println("\t\t\t\t\t\t\t\t==========================================================");
+            System.out.println("\t\t\t\t\t\t\t\t보유 가용 자산이 부족합니다.");
+            System.out.println("\t\t\t\t\t\t\t\t매수량을 다시 입력해 주세요");
+            TradeView.showBuyScreen();
+        }
+
+        return result;
+
+    }
+
+    /**
+     * 보유중인 주식인지 확인하는 메소드
+     */
+    public static boolean hasStock(TradeData td) {
+
+        boolean result = false;
+
+        try {
+
+            File filePath = new File(TradeData.FILEPATH);
+
+            if (filePath.exists()) {
+
+                BufferedReader br = new BufferedReader(new FileReader(TradeData.FILEPATH));
+
+                String line = null;
+
+                while ((line = br.readLine()) != null) {
+
+                    String[] temp = line.split("■");
+
+                    for (int i = 0; i < temp.length; i++) {
+
+                        if (temp[0].equals(td.getStockName())) {
+                            result = true;
+                            break;
+                        }
+
+                    }
+
+                }
+
+            } else {
+                System.out.println("\t\t\t\t\t\t\t\t\t\t\t매수 내역이 없습니다.");
+                System.out.println("\t\t\t\t\t\t\t\t\t\t\t회원 메뉴로 이동합니다.");
+                UserMenu.UI();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 판매 수량이 보유 수량을 초과하는지 확인하는 메소드
+     */
+    public static boolean checkSellQuantity(TradeData td) {
+
+        boolean result = false;
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(TradeData.FILEPATH));
+
+            String line = null;
+
+            while ((line = br.readLine()) != null) {
+
+                String[] temp = line.split("■");
+
+                for (int i = 0; i < temp.length; i++) {
+
+                    if (temp[0].equals(td.getStockName())) {
+                        if (Integer.parseInt(temp[1]) >= Integer.parseInt(td.getVolume())) {
+                            result = true;
+                            break;
+                        }
+                    }
+
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!result) {
+            System.out.println("\t\t\t\t\t\t\t\t==========================================================");
+            System.out.println("\t\t\t\t\t\t\t\t보유 중인 주식 수량을 초과하였습니다.");
+            System.out.println("\t\t\t\t\t\t\t\t매도 수량을 다시 입력해 주세요");
+            TradeView.showSellScreen();
+        }
+
+        return result;
+
+    }
 
 }

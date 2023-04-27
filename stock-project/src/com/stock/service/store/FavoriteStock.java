@@ -27,7 +27,7 @@ public class FavoriteStock {
 			System.out.println("\t\t\t\t\t\t\t\t\t\t\t　　　[My Stock - 관심 종목]");
 			System.out.println("\t\t\t\t\t\t===================================================================================================");
 			System.out.println();
-			System.out.println("\t\t\t\t\t\t　[종목명]\t\t\t[현재가]\t\t[등락률]\t\t[거래량]\t\t[매수호가]\t\t[매도호가]");
+			System.out.println("\t\t\t\t\t\t　[종목명]\t\t\t[현재가]\t\t[등락률]\t\t[거래량]\t\t[ PER ]\t\t[ ROE ]");
 			
 			StockList();
 
@@ -47,12 +47,12 @@ public class FavoriteStock {
 	 */
 	private static void inputEnterMyStock() {
 		
-		String enterLine = "";
+//		String enterLine = ""; //TODO 최종 확인하고 지우기
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.println();
 		System.out.print("\t\t\t\t\t\t\t\t\t\t 　　　계속하시려면 엔터를 입력해주세요.");
-		enterLine = scan.nextLine();
+		String enterLine = scan.nextLine();
 		MyStock.UI();
 		
 		scan.close();
@@ -92,11 +92,10 @@ public class FavoriteStock {
 	 */
 	private static void MyStockList() {
 		
-		//[종목명=temp1][현재가=temp2][등락률=temp4][거래량=temp5][매수호가=temp6][매도호가=temp7]
-		List<List<String>> list = AllStockList.allStockList();
+		List<List<String>> list = AllStockList.storeAllStockList();
 		
 		try {
-			
+			//TODO 관심 주식 목록 수정
 			BufferedReader stockListReader = new BufferedReader(new FileReader(".\\dat\\storage\\stockList.txt"));
 			String line = null;
 			

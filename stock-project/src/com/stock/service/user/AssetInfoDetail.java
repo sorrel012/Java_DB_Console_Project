@@ -36,7 +36,7 @@ public class AssetInfoDetail {
 		int allnowprice = 0;
 		double allrateofreturn = 0;
 		
-		List<List<String>> list = AllStockList.allStockList();
+		List<List<String>> list = AllStockList.storeAllStockList();
 		
 		try {
 			
@@ -93,7 +93,7 @@ public class AssetInfoDetail {
 	 */
 	public static void price() {
 		
-		List<List<String>> list = AllStockList.allStockList();
+		List<List<String>> list = AllStockList.storeAllStockList();
 		
 		try {
 			
@@ -115,7 +115,7 @@ public class AssetInfoDetail {
 									, tmp[0]						//종목명
 									, tmp[1]						//보유수량
 									, d								//매입가
-									, c-d							//평가손익 = 현재가 * 보유수량 - 매입가	
+									, c-d							//평가손익 = 현재가 * 보유수량 - 매입가
 									, (double)c/d*100-100);			//수익률 = (현재가*보유수량 / 매입가) * 100 - 100
 				}
 				
@@ -233,7 +233,7 @@ public class AssetInfoDetail {
 	 */
 	public static String rateOfReturn(String stockName) {
 		
-		List<List<String>> list = AllStockList.allStockList();
+		List<List<String>> list = AllStockList.storeAllStockList();
 		
 		String nowPrice = null;
 		
@@ -246,9 +246,9 @@ public class AssetInfoDetail {
 	            if(l.get(1).equals(stockName)) {
 	               nowPrice = l.get(2);
 	               break;
-	            }      
+	            }
 
-	         }   
+	         }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
