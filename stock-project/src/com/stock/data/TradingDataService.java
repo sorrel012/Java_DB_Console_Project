@@ -18,10 +18,8 @@ import com.db.DBUtil;
  */
 public class TradingDataService {
 
-    private static final String KOSPI = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=0&page="; // 코스피
-    private static final String KOSDAQ = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=1&page="; // 코스닥
-    public static final String KOSPI_LIST = ".\\dat\\stockprice\\kospiList.txt";
-    public static final String KOSDAQ_LIST = ".\\dat\\stockprice\\kosdaqList.txt";
+    public static final String KOSPI = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=0&page="; // 코스피
+    public static final String KOSDAQ = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=1&page="; // 코스닥
 
     /**
      * 코스피, 코스닥의 변동률을 읽어오는 매소드

@@ -67,6 +67,7 @@ public class Search {
 				String[] tmp = line.split("■");
 				List<String> info = new ArrayList<String>();
 
+				// TODO 사용자 입력이랑 같은지 확인
 				if(tmp[1].replace(" ", "").toUpperCase().contains(this.editedName)) {
 
 					info.add(tmp[0]);
