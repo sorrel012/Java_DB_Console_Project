@@ -1,6 +1,5 @@
 package com.stock.service.user;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -23,10 +22,7 @@ import com.stock.view.UserMenu;
  *
  */
 public class RankingPrintService {
-
-    private static final String ASSETS_PATH = ".\\dat\\account\\user.txt";
-    private static final File ASSETS_FILE = new File(ASSETS_PATH);
-
+    
     private static HashMap<String, Integer> userAssets = new HashMap<String, Integer>();
 
     /**
