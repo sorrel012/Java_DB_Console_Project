@@ -9,11 +9,10 @@ import com.stock.data.adminData;
 import com.stock.view.Admin;
 import com.stock.view.LoginUI;
 import com.stock.view.Main;
-import com.stock.view.Menu;
 import com.stock.view.UserMenu;
 /**
  * 로그인 기능을 담당하는 클래스
- * @author 
+ * @author
  *
  */
 public class Login {
@@ -51,7 +50,7 @@ public class Login {
 				//회원 아이디와 패스워드 검사
 				try {
 					
-					BufferedReader userReader = new BufferedReader(new FileReader(".\\dat\\account\\user.txt"));  
+					BufferedReader userReader = new BufferedReader(new FileReader(".\\dat\\account\\user.txt"));
 					
 					String line = null;
 					
@@ -78,7 +77,7 @@ public class Login {
 						}
 							
 						
-					}//while	
+					}//while
 					
 					userReader.close();
 					
@@ -91,7 +90,7 @@ public class Login {
 				//관리자 아이디와 패스워드 검사
 				try {
 					
-					BufferedReader adminReader = new BufferedReader(new FileReader(".\\dat\\account\\admin.txt"));  
+					BufferedReader adminReader = new BufferedReader(new FileReader(".\\dat\\account\\admin.txt"));
 					
 					String line = null;
 					
@@ -113,9 +112,9 @@ public class Login {
 							loop = false;
 							Admin.AdminMenu();
 							break;
-						} 	
+						}
 				
-					}//while	
+					}//while
 		
 					adminReader.close();
 					
