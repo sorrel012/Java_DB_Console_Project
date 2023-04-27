@@ -53,6 +53,7 @@ public class Search {
 	 * 저장된 주식 데이터 파일에서 사용자가 입력한 내용이 포함된 주식의 데이터 파일들을 추출하여 리스트에 저장하는 메소드
 	 * @param stockPath 주식 데이터 파일 경로
 	 */
+	//TODO AllStockList의list 가져와서 if 돌려서 result에 저장하기
 	private void searchStockList(String stockPath) {
 
 		try {
