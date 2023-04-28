@@ -38,16 +38,16 @@ public class RankingPrintService {
 
             con = DBUtil.open();
             
-            String sql = "SELECT MEMBER_SEQ, TOTALACCOUNT FROM TBLACCOUNT";
+            String sql = "SELECT USER_SEQ, TOTALACCOUNT FROM TBLACCOUNT";
             st = con.createStatement();
             rs = st.executeQuery(sql);
 
             while(rs.next()) {
                 
-                String memberSeq = rs.getString("MEMBER_SEQ");
+                String userSeq = rs.getString("USER_SEQ");
                 int totalAccount = rs.getInt("TOTALACCOUNT");
 
-                RankingPrintService.userAssets.put(memberSeq, totalAccount);
+                RankingPrintService.userAssets.put(userSeq, totalAccount);
 
             }
 

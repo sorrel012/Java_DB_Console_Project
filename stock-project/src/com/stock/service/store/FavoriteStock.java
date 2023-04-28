@@ -47,7 +47,6 @@ public class FavoriteStock {
 	 */
 	private static void inputEnterMyStock() {
 		
-//		String enterLine = ""; //TODO 최종 확인하고 지우기
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.println();

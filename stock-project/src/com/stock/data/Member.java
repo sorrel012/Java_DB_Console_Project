@@ -17,7 +17,7 @@ import com.stock.service.signup.Login;
  */
 public class Member {
 
-    public static ArrayList<Member> members = new ArrayList<Member>();
+    public static List<Member> members = new ArrayList<Member>();
 
     private String no;
     private String name;
@@ -126,176 +126,194 @@ public class Member {
     public void setAvailableAssets(String availableAssets) {
         this.availableAssets = availableAssets;
     }
+    
 
-    /**
-     * 회원 데이터를 불러와서 Member 클래스에 저장하는 메소드
-     */
-    public static void createMember() {
+/**
+ * 회원 데이터를 불러와서 Member 클래스에 저장하는 메소드
+ */
+public static List<Member> createMember() {
+    
+    List<List<String>> users = createMemberList();
+    List<List<String>> accounts =createAccountList();
+    
+    List<Member> members = new ArrayList<Member>();
 
-        List<List<String>> users = createMemberList();
-        List<List<String>> accounts =createAccountList();
-        
-        for (int i = 0; i < users.size(); i++) {
-            
-            String no = users.get(i).get(0);
-            String name = users.get(i).get(1);
-            String id = users.get(i).get(2);
-            String pw = users.get(i).get(3);
-            String tel = users.get(i).get(4);
-            String birthday = users.get(i).get(5);
-            String email = users.get(i).get(6);
-            String totalAcc = accounts.get(i).get(0);
-            String availAcc = accounts.get(i).get(1);
-            
+    for (int i = 0; i < users.size(); i++) {
 
-            Member member = new Member(no, name, id, pw, tel, birthday, email, totalAcc, availAcc);
-            members.add(member);
-            
-        }
+        String no = users.get(i).get(0);
+        String name = users.get(i).get(1);
+        String id = users.get(i).get(2);
+        String pw = users.get(i).get(3);
+        String tel = users.get(i).get(4);
+        String birthday = users.get(i).get(5);
+        String email = users.get(i).get(6);
+        String totalAcc = accounts.get(i).get(0);
+        String availAcc = accounts.get(i).get(1);
+
+
+        Member member = new Member(no, name, id, pw, tel, birthday, email, totalAcc, availAcc);
+        members.add(member);
+
     }
     
+    Member.members = members;
+
+    return members;
+}
+
 
     /**
      * 데이터베이스에서 회원 개인정보를 불러오는 메소드
      */
-    public static List<List<String>> createMemberList() {
-        
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
-        
-        List<List<String>> users = new ArrayList<List<String>>();
-        
-        try {
-            
-            con = DBUtil.open();
+     public static List<List<String>> createMemberList() {
 
-            String sql = "SELECT * FROM TBLMEMBER ORDER BY MEMBER_SEQ";
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
-            
-            while(rs.next()) {
-                
-                List<String> tmpUserList = new ArrayList<String>();
-                        
-                String no = rs.getString("MEMBER_SEQ");
-                String name = rs.getString("NAME");
-                String id = rs.getString("ID");
-                String pw = rs.getString("PW");
-                String tel = rs.getString("TEL");
-                String birthday = rs.getString("BIRTH");
-                String email = rs.getString("EMAIL");
-                
-                tmpUserList.add(no);
-                tmpUserList.add(name);
-                tmpUserList.add(id);
-                tmpUserList.add(pw);
-                tmpUserList.add(tel);
-                tmpUserList.add(birthday);
-                tmpUserList.add(email);
-                
-                users.add(tmpUserList);
-                
-            }
-            
-            return users;
+         Connection con = null;
+         Statement st = null;
+         ResultSet rs = null;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return users;
-    }
-    
-    
-    /**
-     * 데이터베이스에서 회원 자산정보를 불러오는 메소드
-     */
-    public static List<List<String>> createAccountList() {
-        
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
-        
-        List<List<String>> accounts = new ArrayList<List<String>>();
-        
-        try {
-            
-            con = DBUtil.open();
-            
-            String sql = "SELECT * FROM TBLACCOUNT ORDER BY MEMBER_SEQ";
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
-            
-            while(rs.next()) {
-                
-                List<String> tmpAccountList = new ArrayList<String>();
-                
-                String totalAcc = rs.getString("TOTALACCOUNT");
-                String availAcc = rs.getString("AVAILACCOUNT");
-                
-                tmpAccountList.add(totalAcc);
-                tmpAccountList.add(availAcc);
-                
-                accounts.add(tmpAccountList);
-                
-            }
-            
-            return accounts;
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return accounts;
-    }
-        
+         List<List<String>> users = new ArrayList<List<String>>();
 
-    /**
-     *
-     * 계정 정보를 업데이트 시키는 메소드
-     */
-    public static void updateAccountInfo(TradeData td, String type) {
+         try {
 
-        Connection con = null;
-        PreparedStatement pstat = null;
-        
-        try {
+             con = DBUtil.open();
 
-            String targetId = Login.loginUser.getId(); //멤버 고유번호
-            int newAmount = 0; //가용자산
-            int totalAmount = 0; //총자산
+             String sql = "SELECT * FROM TBLUSER ORDER BY USER_SEQ";
+             st = con.createStatement();
+             rs = st.executeQuery(sql);
 
-            if (type.equals("매수")) {
-                newAmount = td.getTotalAvailableAssets();
-                Login.loginUser.setAvailableAssets(newAmount);
-                totalAmount = td.getTotalAssets() + Login.loginUser.getAvailableAssets();
+             while(rs.next()) {
 
-            } else {
-                newAmount = Login.loginUser.getAvailableAssets() + td.getTotalPrice();
-                Login.loginUser.setAvailableAssets(newAmount);
-                totalAmount = td.getTotalAssets() + Login.loginUser.getAvailableAssets();
-            }
+                 List<String> tmpUserList = new ArrayList<String>();
 
-            con = DBUtil.open();
-            
-            String sql = "UPDATE TBLACCOUNT SET TOTALACCOUNT=?, AVAILACCOUNT=? WHERE MEMBER_SEQ=?";
-            pstat = con.prepareStatement(sql);
-            
-            pstat.setInt(1, totalAmount);
-            pstat.setInt(2, newAmount);
-            pstat.setInt(3, Integer.parseInt(targetId));
+                 String no = rs.getString("MEMBER_SEQ");
+                 String name = rs.getString("NAME");
+                 String id = rs.getString("ID");
+                 String pw = rs.getString("PW");
+                 String tel = rs.getString("TEL");
+                 String birthday = rs.getString("BIRTH");
+                 String email = rs.getString("EMAIL");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                 tmpUserList.add(no);
+                 tmpUserList.add(name);
+                 tmpUserList.add(id);
+                 tmpUserList.add(pw);
+                 tmpUserList.add(tel);
+                 tmpUserList.add(birthday);
+                 tmpUserList.add(email);
 
-    }
+                 users.add(tmpUserList);
 
-    @Override
-    public String toString() {
-        return String.format("Member [no=%s, name=%s, id=%s, pw=%s, tel=%s, birthday=%s, email=%s, money=%s]", no, name,
-                id, pw, tel, birthday, email, money);
-    }
+             }
+             
+             rs.close();
+             st.close();
+             con.close();
+
+             return users;
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+
+         return users;
+     }
+
+
+     /**
+      * 데이터베이스에서 회원 자산정보를 불러오는 메소드
+      */
+     public static List<List<String>> createAccountList() {
+
+         Connection con = null;
+         Statement st = null;
+         ResultSet rs = null;
+
+         List<List<String>> accounts = new ArrayList<List<String>>();
+
+         try {
+
+             con = DBUtil.open();
+
+             String sql = "SELECT * FROM TBLACCOUNT ORDER BY USER_SEQ";
+             st = con.createStatement();
+             rs = st.executeQuery(sql);
+
+             while(rs.next()) {
+
+                 List<String> tmpAccountList = new ArrayList<String>();
+
+                 String totalAcc = rs.getString("TOTALACCOUNT");
+                 String availAcc = rs.getString("AVAILACCOUNT");
+
+                 tmpAccountList.add(totalAcc);
+                 tmpAccountList.add(availAcc);
+
+                 accounts.add(tmpAccountList);
+
+             }
+             
+             rs.close();
+             st.close();
+             con.close();
+
+             return accounts;
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+
+         return accounts;
+     }
+
+
+     /**
+      *
+      * 계정 정보를 업데이트 시키는 메소드
+      */
+     public static void updateAccountInfo(TradeData td, String type) {
+
+         Connection con = null;
+         PreparedStatement pstat = null;
+
+         try {
+
+             String targetId = Login.loginUser.getId(); //멤버 고유번호
+             int newAmount = 0; //가용자산
+             int totalAmount = 0; //총자산
+
+             if (type.equals("매수")) {
+                 newAmount = td.getTotalAvailableAssets();
+                 Login.loginUser.setAvailableAssets(newAmount);
+                 totalAmount = td.getTotalAssets() + Login.loginUser.getAvailableAssets();
+
+             } else {
+                 newAmount = Login.loginUser.getAvailableAssets() + td.getTotalPrice();
+                 Login.loginUser.setAvailableAssets(newAmount);
+                 totalAmount = td.getTotalAssets() + Login.loginUser.getAvailableAssets();
+             }
+
+             con = DBUtil.open();
+
+             String sql = "UPDATE TBLACCOUNT SET TOTALACCOUNT=?, AVAILACCOUNT=? WHERE USER_SEQ=?";
+             pstat = con.prepareStatement(sql);
+
+             pstat.setInt(1, totalAmount);
+             pstat.setInt(2, newAmount);
+             pstat.setInt(3, Integer.parseInt(targetId));
+             
+             pstat.close();
+             con.close();
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+
+     }
+
+     @Override
+     public String toString() {
+         return String.format("Member [no=%s, name=%s, id=%s, pw=%s, tel=%s, birthday=%s, email=%s, money=%s]", no, name,
+                 id, pw, tel, birthday, email, money);
+     }
 
 }

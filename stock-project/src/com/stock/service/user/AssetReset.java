@@ -113,10 +113,13 @@ public class AssetReset {
             
             con = DBUtil.open();
             
-            String sql = "UPDATE TBLACCOUNT SET TOTALACCOUNT=10000000, AVAILACCOUNT=10000000 WHERE MEMBER_SEQ = ?";
+            String sql = "UPDATE TBLACCOUNT SET TOTALACCOUNT=10000000, AVAILACCOUNT=10000000 WHERE USER_SEQ = ?";
             pstat = con.prepareStatement(sql);
             
             pstat.setInt(1, Integer.parseInt(Login.loginUser.getNo()));
+            
+            pstat.close();
+            con.close();
 
         } catch (Exception e) {
             e.printStackTrace();

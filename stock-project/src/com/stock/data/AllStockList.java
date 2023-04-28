@@ -65,7 +65,10 @@ public class AllStockList {
               
               result.add(tmp);
           }
-         
+          
+          rs.close();
+          st.close();
+          con.close();
 
       } catch (Exception e) {
          e.printStackTrace();

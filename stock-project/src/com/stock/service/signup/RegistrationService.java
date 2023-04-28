@@ -1,7 +1,6 @@
 package com.stock.service.signup;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 
 import com.stock.data.Member;
@@ -15,16 +14,12 @@ import com.stock.view.Menu;
  */
 public class RegistrationService {
 	
-	public final static String USERDIR = ".\\dat\\account\\user.txt";
-	
 		/**
 		 * 회원가입한 신규 회원의 정보를 저장하는 메소드
 		 */
 		public static void signUp() {
 			
-			File userFile = new File(USERDIR);
-			
-			Member.createMemberList(userFile);
+			Member.createMemberList();
 			
 			//계정 생성화면 출력하고 member객체를 반환
 			Member member = Menu.signUpMenu();
