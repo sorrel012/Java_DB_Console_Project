@@ -38,7 +38,7 @@ public class RankingPrintService {
 
             con = DBUtil.open();
             
-            String sql = "SELECT USER_SEQ, TOTALACCOUNT FROM TBLACCOUNT";
+            String sql = "SELECT USER_SEQ, TOTALACCOUNT FROM TBLACCOUNT ORDER BY USER_SEQ";
             st = con.createStatement();
             rs = st.executeQuery(sql);
 
@@ -93,9 +93,14 @@ public class RankingPrintService {
 
     }
 
+    /**
+     * 랭킹에 출력할 user의 아이디와 이름을 합쳐주는 메소드
+     * @param no user의 고유번호
+     * @return user의 아이디와 이름
+     */
     private static String makeUserIdName(String no) {
 
-        ArrayList<Member> userInfoList = UserInfo.readUserAccountFile();
+        List<Member> userInfoList = UserInfo.readUserAccountFile();
 
         String id = "";
         String name = "";
