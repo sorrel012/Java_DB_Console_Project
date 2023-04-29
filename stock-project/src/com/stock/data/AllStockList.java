@@ -82,7 +82,6 @@ public class AllStockList {
       
        readAllStockList("kospi");
        readAllStockList("kosdaq");
-
        
        return result;
    }
