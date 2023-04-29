@@ -323,7 +323,7 @@ public class UserInfo {
     /**
      * user 정보를 데이터베이스에서 모두 삭제하는 메소드
      */
-    private static void deleteDBUserData(String no) {
+    public static void deleteDBUserData(String no) {
         
         Connection con = null;
         PreparedStatement pstat = null;
