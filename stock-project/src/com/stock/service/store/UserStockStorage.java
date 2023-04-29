@@ -1,12 +1,13 @@
 package com.stock.service.store;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.db.DBUtil;
 import com.stock.service.search.SearchDetail;
 
 /**
@@ -16,132 +17,165 @@ import com.stock.service.search.SearchDetail;
  */
 public class UserStockStorage {
 
-	private List<StockStorage> userStorageList = new ArrayList<StockStorage>();
-	private final String PATH = ".\\dat\\storage\\stockList.txt";
-	private StockStorage myStockList;
-	
-	/**
-	 * 로그인한 회원이 추가한 관심 주식을 저장하는 메소드
-	 * @param no 로그인한 회원의 고유 넘버
-	 * @param stockName 로그인한 회원이 추가한 관심 주식명
-	 */
-	public void addUser(String no, String stockName) {
-		
-		load();
-		StockStorage s = new StockStorage(no);
-		
-		if(!checkContains(no)) {	//처음 찜하는 유저
-			s.setStockName(stockName);
-			userStorageList.add(s);
-			
-		} else {					//이전에 찜한 기록이 있는 유저
-			
-			if(checkSameStock(stockName)) {
-				myStockList.setStockName(stockName);
-				
-			} else {
-				System.out.println("\t\t\t\t\t\t\t\t이미 저장되어 있는 주식입니다.\n");
-				SearchDetail.userAdditionalInput();
-			}
-			
-		}
-		
-		save();
+    private List<String> myStockList;
 
-	}
-	
-	/**
-	 * 이전에 저장한 관심 주식이 있는 회원의 관심 주식 목록에 새로 추가하고자 하는 주식이 이미 저장되어 있는지 확인하는 메소드
-	 * @param stockName 새로 추가하고자 하는 주식 종목명
-	 * @return 이미 저장되어 있다면 false / 저장되어 있지 않다면 true
-	 */
-	private boolean checkSameStock(String stockName) {
-		
-		List<String> userStockList = myStockList.getStockList();
-		
-		for(String s : userStockList) {
-			
-			if(s.equals(stockName)) {
-				return false;
-			}
-			
-		}
+    /**
+     * 로그인한 회원이 추가한 관심 주식을 저장하는 메소드
+     * @param no 로그인한 회원의 고유 넘버
+     * @param stockName 로그인한 회원이 추가한 관심 주식명
+     */
+    public void addUser(String no, String stockName) {
 
-		return true;
-	}
+        List<List<String>> userStorageList = load();
 
-	/**
-	 * 로그인한 회원이 이전에 저장한 관심 주식이 있는지 확인하는 메소드
-	 * @param no 로그인한 회원의 고유 넘버
-	 * @return 이전에 저장한 관심 주식이 있을 경우 true / 없을 경우 false
-	 */
-	private boolean checkContains(String no) {
+        if(!checkContains(no)) {	//처음 찜하는 유저
+            save(no, stockName);
 
-		for(int i = 0; i < userStorageList.size(); i++) {
+        } else {					//이전에 찜한 기록이 있는 유저
 
-			if(this.userStorageList.get(i).getNo().equals(no)) {
-				myStockList = userStorageList.get(i);
-				return true;
-			}
+            if(checkSameStock(stockName)) {
+                save(no, stockName);
 
-		}
+            } else {
+                System.out.println("\t\t\t\t\t\t\t\t이미 저장되어 있는 주식입니다.\n");
+                SearchDetail.userAdditionalInput();
+            }
 
-		return false;
-	}
+        }
 
-	/**
-	 * 모든 회원의 관심 주식 목록을 불러오는 메소드
-	 */
-	private void load() {
+    }
 
-		try {
+    /**
+     * 이전에 저장한 관심 주식이 있는 회원의 관심 주식 목록에 새로 추가하고자 하는 주식이 이미 저장되어 있는지 확인하는 메소드
+     * @param stockName 새로 추가하고자 하는 주식 종목명
+     * @return 이미 저장되어 있다면 false / 저장되어 있지 않다면 true
+     */
+    private boolean checkSameStock(String stockName) {
 
-			BufferedReader reader = new BufferedReader(new FileReader(this.PATH));
+        for(String s : this.myStockList) {
 
-			String line = null;
+            if(s.equals(stockName)) {
+                return false;
+            }
 
-			while((line = reader.readLine()) != null) {
+        }
 
-				String[] tmp = line.split(",");
+        return true;
+    }
 
-				StockStorage s = new StockStorage(tmp[0]);
-				
-				for(int i = 1; i < tmp.length; i++) {
-					s.setStockName(tmp[i]);
-				}
-				
-				this.userStorageList.add(s);
+    /**
+     * 로그인한 회원이 이전에 저장한 관심 주식이 있는지 확인하는 메소드
+     * @param no 로그인한 회원의 고유 넘버
+     * @return 이전에 저장한 관심 주식이 있을 경우 true / 없을 경우 false
+     */
+    private boolean checkContains(String no) {
 
-			}
+        List<List<String>> userStorageList = load();
 
-			reader.close();
+        this.myStockList = new ArrayList<String>();
+        boolean isContain = false;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        for(List<String> tmpUserStorage : userStorageList) {
 
-	}
+            if(tmpUserStorage.get(0).equals(no)) {
+                isContain = true;
+                this.myStockList.add(tmpUserStorage.get(1));
+            }
 
-	/**
-	 * 로그인한 회원의 관심 주식 목록을 업데이트하여 데이터 파일에 저장하는 메소드
-	 */
-	public void save() {
+        }
 
-		try {
+        return isContain;
+    }
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter(".\\dat\\storage\\stockList.txt"));
+    /**
+     * 모든 회원의 관심 주식 목록을 불러오는 메소드
+     */
+    public static List<List<String>> load() {
 
-			for(StockStorage s : userStorageList) {
-				String line = String.format("%s\n", s.toString());
-				writer.write(line);
-			}
+        List<List<String>> likeStocks = new ArrayList<List<String>>();
 
-			writer.close();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
 
-	}
-	
+            con = DBUtil.open();
+            st = con.createStatement();
+
+            String sql = "SELECT USER_SEQ, LIKESTOCK FROM TBLLIKE";
+            rs = st.executeQuery(sql);
+
+            while(rs.next()) {
+
+                List<String> tmpLikeStock = new ArrayList<String>();
+
+                String userNo = rs.getString("USER_SEQ");
+                String stockName = rs.getString("LIKESTOCK");
+
+                tmpLikeStock.add(userNo);
+                tmpLikeStock.add(stockName);
+
+                likeStocks.add(tmpLikeStock);
+
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+
+            return likeStocks;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return likeStocks;
+    }
+
+    /**
+     * 로그인한 회원의 새로운 관심 주식을 데이터베이스에 추가하는 메소드
+     */
+    public void save(String no, String stockName) {
+
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        PreparedStatement pstat = null;
+
+        try {
+
+            con = DBUtil.open();
+
+            st = con.createStatement();
+
+            String sql = "SELECT NVL(MAX(LIKE_SEQ),0) FROM TBLLIKE";
+            rs = st.executeQuery(sql);
+
+            int likeSeq = 0;
+
+            if(rs.next()) {
+                likeSeq = rs.getInt("LIKE_SEQ");
+            }
+
+            sql = "INSERT INTO TBLLIKE VALUES(?,?,?)";
+            pstat = con.prepareStatement(sql);
+
+            pstat.setInt(1, likeSeq+1);
+            pstat.setInt(2, Integer.parseInt(no));
+            pstat.setString(3, stockName);
+
+            pstat.executeUpdate();
+
+            st.close();
+            rs.close();
+            pstat.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
