@@ -30,9 +30,9 @@ public class AllStockList {
           String sql = null;
           
           if(stockSort.equals("kospi")) {
-              sql = "SELECT * FROM TBLKOSPI";
+              sql = "SELECT * FROM TBLKOSPI ORDER BY KOSPI_SEQ";
           } else if(stockSort.equals("kosdaq")) {
-              sql = "SELECT * FROM TBLKOSDAQ";
+              sql = "SELECT * FROM TBLKOSDAQ ORDER BY KOSDAQ_SEQ";
           }
           
           st = con.createStatement();
