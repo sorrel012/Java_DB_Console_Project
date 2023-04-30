@@ -18,27 +18,29 @@ public class Menu {
 		System.out.println();
 		System.out.println();
 		  
-		System.out.println("\t\t\t\t\t　　░█░█░▀█▀░█▀▄░▀█▀░█░█░█▀█░█░░░░░█▀▀░▀█▀░█▀█░█▀▀░█░█░░░▀█▀░█▀▄░█▀█░█▀▄░▀█▀░█▀█░█▀▀░░░█▀▀░█░█░█▀▀░▀█▀░█▀▀░█▄█\r\n"
-				+ "\t\t\t\t\t　　░▀▄▀░░█░░█▀▄░░█░░█░█░█▀█░█░░░░░▀▀█░░█░░█░█░█░░░█▀▄░░░░█░░█▀▄░█▀█░█░█░░█░░█░█░█░█░░░▀▀█░░█░░▀▀█░░█░░█▀▀░█░█\r\n"
-				+ "\t\t\t\t\t　　░░▀░░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀░░░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░░░░▀░░▀░▀░▀░▀░▀▀░░▀▀▀░▀░▀░▀▀▀░░░▀▀▀░░▀░░▀▀▀░░▀░░▀▀▀░▀░▀\r\n"
-				+ "");
+		System.out.println("\t\t\t\t\t　　░█░█░▀█▀░█▀▄░▀█▀░█░█░█▀█░█░░░░░█▀▀░▀█▀░█▀█░█▀▀░█░█░░░░▀█▀░█▀▄░█▀█░█▀▄░▀█▀░█▀█░█▀▀░░░█▀▀░█░█░█▀▀░▀█▀░█▀▀░█▄█\r\n"
+            				+ "\t\t\t\t\t　　░▀▄▀░░█░░█▀▄░░█░░█░█░█▀█░█░░░░░▀▀█░░█░░█░█░█░░░█▀▄░░░░░█░░█▀▄░█▀█░█░█░░█░░█░█░█░█░░░▀▀█░░█░░▀▀█░░█░░█▀▀░█░█\r\n"
+            				+ "\t\t\t\t\t　　░░▀░░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀░░░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░░░░░▀░░▀░▀░▀░▀░▀▀░░▀▀▀░▀░▀░▀▀▀░░░▀▀▀░░▀░░▀▀▀░░▀░░▀▀▀░▀░▀\r\n"
+            				+ "");
+		
+		
 		
 		
 	    System.out.println();
 	    System.out.println();
 	    
 	     
-	    System.out.println("\t\t\t\t\t\t\t\t▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");		
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　　< 메뉴 선택 >\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　1. 시세정보\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　2. 주식 종목 검색\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　3. 로그인\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　4. 회원가입\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　0. 종료\t\t\t\t\t█");
-	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
+	    System.out.println("\t\t\t\t\t\t\t\t▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　　< 메뉴 선택 >\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　1. 시세정보\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　2. 주식 종목 검색\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　3. 로그인\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　4. 회원가입\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t　0. 종료\t\t\t\t\t\t      █");
+	    System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
 	    System.out.println("\t\t\t\t\t\t\t\t▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀");
 	    
 	    System.out.println();
