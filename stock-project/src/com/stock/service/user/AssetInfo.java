@@ -43,11 +43,11 @@ public class AssetInfo {
 	public static void assetInfoDetail(){
 		
 		System.out.println();
-		System.out.println("\t\t\t\t\t\t\t=============================================================================");
-		System.out.println("\t\t\t\t\t\t\t\t\t\t\t[종목별 정보 조회] ");
-		System.out.println("\t\t\t\t\t\t\t=============================================================================");
-		System.out.println("\t\t\t\t\t\t\t종목명\t\t보유수량\t\t매입가(원)\t\t평가손익(원)\t　　　　수익률(%)");
-		System.out.println("\t\t\t\t\t\t\t=============================================================================");
+		System.out.println("\t\t\t\t\t\t\t======================================================================================");
+		System.out.println("\t\t\t\t\t\t\t\t\t\t\t    [종목별 정보 조회] ");
+		System.out.println("\t\t\t\t\t\t\t======================================================================================");
+		System.out.println("\t\t\t\t\t\t\t종목명\t\t보유수량\t\t매입가(원)\t     평가손익(원)\t　    　　　수익률(%)");
+		System.out.println("\t\t\t\t\t\t\t======================================================================================");
 		
 		AssetInfoDetail.price();
 		
