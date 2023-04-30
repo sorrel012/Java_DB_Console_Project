@@ -58,6 +58,9 @@ public class TradingDataService {
             
             for (int i = 1; i <= pageNum; i++) {
                 Document doc = Jsoup.connect(KOSPI + i).get(); // 웹에서 내용을 가져온다
+                if(stockUrl.equals(KOSDAQ)) {
+                    doc = Jsoup.connect(KOSDAQ + i).get();
+                }
 
              // 페이지 전체 읽어오기
                 Elements stockData = doc.select("td");
