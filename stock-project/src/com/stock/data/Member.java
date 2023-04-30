@@ -28,6 +28,8 @@ public class Member {
     private String email;
     private String money;
     private String availableAssets;
+    
+    public Member() {}
 
     public Member(String no, String name, String id, String pw, String tel, String birthday, String email, String money) {
 
@@ -185,7 +187,7 @@ public static List<Member> createMember() {
 
                  List<String> tmpUserList = new ArrayList<String>();
 
-                 String no = rs.getString("MEMBER_SEQ");
+                 String no = rs.getString("USER_SEQ");
                  String name = rs.getString("NAME");
                  String id = rs.getString("ID");
                  String pw = rs.getString("PW");
