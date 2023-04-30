@@ -61,15 +61,15 @@ public class AssetInfoDetail {
 
             }
 
-            System.out.printf("\t\t\t\t\t\t\t\t　　　　　　 총자산 　 　: %,12d \t 가용자산　  : %,12d\n"
+            System.out.printf("\t\t\t\t\t\t\t\t　　총자산 　 　: %,12d \t 가용자산　  : %,12d\n"
                     , Login.loginUser.getMoney()	//총자산
                     , Login.loginUser.getAvailableAssets());	//가용자산
 
-            System.out.printf("\t\t\t\t\t\t\t\t　　　　　　 평가금액(원): %,12d \t 평가수익률  : %11.2f%%\n"
+            System.out.printf("\t\t\t\t\t\t\t\t　　평가금액(원): %,12d \t 평가수익률  : %11.2f%%\n"
                     , Login.loginUser.getMoney() - Login.loginUser.getAvailableAssets()	//평가금액
                     , allrateofreturn);	//평가수익률: 현재가격/매수가격 * 100 - 100
 
-            System.out.printf("\t\t\t\t\t\t\t\t　　　　　　 평가손익(원): %,12d \t 매입금액(원): %,12d\n"
+            System.out.printf("\t\t\t\t\t\t\t\t　　평가손익(원): %,12d \t 매입금액(원): %,12d\n"
                     , allreturn		//평가손익: 현재가-매입가*수량
                     , allprice); 	//매입금액
 
@@ -191,7 +191,6 @@ public class AssetInfoDetail {
         history(stockName);
 
         int price = 0;
-
 
         for(ArrayList<String> l: historyList) {
             if(l.get(0).equals(stockName)) {
