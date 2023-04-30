@@ -149,13 +149,13 @@ public class UserStockStorage {
 
             st = con.createStatement();
 
-            String sql = "SELECT NVL(MAX(LIKE_SEQ),0) FROM TBLLIKE";
+            String sql = "SELECT NVL(MAX(LIKE_SEQ),0) AS MAX FROM TBLLIKE";
             rs = st.executeQuery(sql);
 
             int likeSeq = 0;
 
             if(rs.next()) {
-                likeSeq = rs.getInt("LIKE_SEQ");
+                likeSeq = rs.getInt("MAX");
             }
 
             sql = "INSERT INTO TBLLIKE VALUES(?,?,?)";

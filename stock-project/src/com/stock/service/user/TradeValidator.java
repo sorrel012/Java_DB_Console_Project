@@ -1,10 +1,11 @@
 package com.stock.service.user;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
+import com.db.DBUtil;
 import com.stock.data.AllStockList;
 import com.stock.data.TradeData;
 import com.stock.service.signup.Login;
@@ -79,31 +80,27 @@ public class TradeValidator {
 
         boolean result = false;
 
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
         try {
 
-            File filePath = new File(TradeData.FILEPATH);
+            con = DBUtil.open();
+            st = con.createStatement();
 
-            if (filePath.exists()) {
+            String sql = "SELECT COUNT(*) AS CNT FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            rs = st.executeQuery(sql);
 
-                BufferedReader br = new BufferedReader(new FileReader(TradeData.FILEPATH));
+            int cnt = 0;
 
-                String line = null;
+            if(rs.next()) {
+                cnt = rs.getInt("CNT");
+            }
 
-                while ((line = br.readLine()) != null) {
 
-                    String[] temp = line.split("■");
-
-                    for (int i = 0; i < temp.length; i++) {
-
-                        if (temp[0].equals(td.getStockName())) {
-                            result = true;
-                            break;
-                        }
-
-                    }
-
-                }
-
+            if (cnt != 0) {
+                result = true;
             } else {
                 System.out.println("\t\t\t\t\t\t\t\t\t\t\t매수 내역이 없습니다.");
                 System.out.println("\t\t\t\t\t\t\t\t\t\t\t회원 메뉴로 이동합니다.");
@@ -124,29 +121,28 @@ public class TradeValidator {
 
         boolean result = false;
 
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
         try {
 
-            BufferedReader br = new BufferedReader(new FileReader(TradeData.FILEPATH));
+            con = DBUtil.open();
+            st = con.createStatement();
 
-            String line = null;
+            String sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            rs = st.executeQuery(sql);
 
-            while ((line = br.readLine()) != null) {
+            int volume = 0;
 
-                String[] temp = line.split("■");
-
-                for (int i = 0; i < temp.length; i++) {
-
-                    if (temp[0].equals(td.getStockName())) {
-                        if (Integer.parseInt(temp[1]) >= Integer.parseInt(td.getVolume())) {
-                            result = true;
-                            break;
-                        }
-                    }
-
-                }
-
+            if(rs.next()) {
+                volume = rs.getInt("VOLUME");
             }
 
+
+            if (volume >= Integer.parseInt(td.getVolume())) {
+                result = true;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

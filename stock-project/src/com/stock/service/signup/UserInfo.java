@@ -18,9 +18,6 @@ import com.stock.view.UserMenu;
  */
 public class UserInfo {
 
-    private static final String HISTORY_DIR_PATH = ".\\dat\\tradinghistory\\" + Login.loginUser.getId();
-    private static final String HISTORY_BUY_LIST_FILE_PATH = HISTORY_DIR_PATH + "\\buyList.txt";
-    private static final String HISTORY_HISTORY_FILE_PATH = HISTORY_DIR_PATH + "\\history.txt";
     private static List<Member> originMemberList = new ArrayList<Member>();
 
     /**

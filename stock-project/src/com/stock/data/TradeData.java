@@ -1,14 +1,15 @@
 package com.stock.data;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.db.DBUtil;
 import com.stock.service.signup.Login;
 
 /**
@@ -18,16 +19,15 @@ import com.stock.service.signup.Login;
  */
 public class TradeData {
 
-    public final static String HISTORYDIR = ".\\dat\\tradinghistory\\";
-    public final static String FILEPATH = HISTORYDIR + Login.loginUser.getId() + "\\" + "buyList.txt";
-    public final static String HISTORYFILE = HISTORYDIR + Login.loginUser.getId() + "\\" + "history.txt";
-
     private String stockName;				//주식명
     private String volume;					//매수량
     private String priceNow;				//현재가
     private int totalPrice;					//총 매수금액 / 매도금액
     private int totalAssets;				//총 자산
     private int totalAvailableAssets;		//총 가용자산
+
+    private List<String> stockNameList;
+    private List<String> volumeList;
 
     private List<List<String>> allStocks = AllStockList.storeAllStockList();
 
@@ -75,50 +75,66 @@ public class TradeData {
 
         int sum = 0;
 
-        try {
+        allStocks = AllStockList.storeAllStockList();
+        readUserStocks();
 
-            allStocks = AllStockList.storeAllStockList();
+        for (List<String> tmpList : allStocks) {
 
-            BufferedReader buyReader = new BufferedReader(new FileReader(TradeData.FILEPATH));
+            for (int j = 0; j < this.stockNameList.size(); j++) {
 
-            ArrayList<String> buyName = new ArrayList<String>();
-            ArrayList<String> volume = new ArrayList<String>();
+                int stockPrice = 0;
 
-            String line = null;
-
-            while ((line = buyReader.readLine()) != null) {
-
-                String[] temp = line.split("■");
-
-                buyName.add(temp[0]);
-                volume.add(temp[1]);
-
-            }
-
-            for (List<String> tmpList : allStocks) {
-
-                for (int j = 0; j < buyName.size(); j++) {
-
-                    int stockPrice = 0;
-
-                    if (tmpList.get(1).equals(buyName.get(j))) {
-                        stockPrice = Integer.parseInt(tmpList.get(2).replaceAll(",", ""));
-                        sum += stockPrice * Integer.parseInt(volume.get(j));
-                        break;
-                    }
-
+                if (tmpList.get(1).equals(this.stockNameList.get(j))) {
+                    stockPrice = Integer.parseInt(tmpList.get(2).replaceAll(",", ""));
+                    sum += stockPrice * Integer.parseInt(this.volumeList.get(j));
+                    break;
                 }
 
             }
 
-            buyReader.close();
+        }
 
+
+        return sum;
+    }
+
+
+    /**
+     * 로그인한 회원이 보유한 주식명과 주수를 DB에서 읽어오는 메소드
+     */
+    private void readUserStocks() {
+
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        this.stockNameList = new ArrayList<String>();
+        this.volumeList = new ArrayList<String>();
+
+        try {
+
+            String userNo = Login.loginUser.getNo();
+
+            con = DBUtil.open();
+            st = con.createStatement();
+
+            String sql = "SELECT STOCKNAME, VOLUME FROM TBLSTOCK WHERE USER_SEQ=" + userNo;
+            rs = st.executeQuery(sql);
+
+            while(rs.next()) {
+
+                this.stockNameList.add(rs.getString("STOCKNAME"));
+                this.volumeList.add(rs.getString("VOLUME"));
+
+            }
+
+            rs.close();
+            st.close();
+            con.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return sum;
 
     }
 
@@ -134,32 +150,57 @@ public class TradeData {
         this.totalAvailableAssets = totalAvailableAssets;
     }
 
+
     /**
-     * 매수 & 매도 히스토리를 텍스트 파일로 생성하는 메소드
+     * 매수 & 매도 히스토리를 DB에 저장하는 메소드
      */
     public static void createHistory(TradeData td, String type) {
 
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        PreparedStatement pstat = null;
+
         try {
+            
+            con = DBUtil.open();
+            st = con.createStatement();
 
             Calendar cal = Calendar.getInstance();
             String date = String.format("%tF", cal);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date utilDate = sdf.parse(date);
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-            File dir = new File(HISTORYDIR + Login.loginUser.getId());
-            dir.mkdir();
 
-            File file = new File(HISTORYDIR + Login.loginUser.getId() + "\\" + "history.txt");
-            file.createNewFile();
+            String sql = "SELECT NVL(MAX(HISTORY_SEQ),0) AS MAX FROM TBLTRADING";
+            rs = st.executeQuery(sql);
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+            int historySeq = 0;
 
-            if (file.exists()) {
-
-                String content = String.format("%s■%s■%s■%,d■%s■%s■%s\n", Login.loginUser.getId(), td.getStockName(), td.getPriceNow(), td.getTotalPrice(), date, type, td.getVolume());
-                bw.write(content);
-                System.out.printf("\t\t\t\t\t\t\t\t%s가 완료되었습니다.\n", type);
-                bw.close();
+            if(rs.next()) {
+                historySeq = rs.getInt("MAX");
             }
+            
+            sql = "INSERT INTO TBLTRADING VALUES(?,?,?,?,?,?,?,?)";
+            pstat = con.prepareStatement(sql);
+            
+            pstat.setInt(1, historySeq+1);
+            pstat.setInt(2, Integer.parseInt(Login.loginUser.getNo()));
+            pstat.setString(3, td.getStockName());
+            pstat.setInt(4, Integer.parseInt(td.getPriceNow()));
+            pstat.setInt(5, Integer.parseInt(td.getVolume()));
+            pstat.setInt(6, td.getTotalPrice());
+            pstat.setDate(7, sqlDate);
+            pstat.setString(8, type);
 
+            System.out.printf("\t\t\t\t\t\t\t\t%s가 완료되었습니다.\n", type);
+            
+            rs.close();
+            st.close();
+            pstat.close();
+            con.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,49 +208,80 @@ public class TradeData {
 
     }
 
+
     /**
-     * 매수한 주식의 정보를 텍스트 파일로 생성하는 메소드
+     * 매수한 주식의 정보를 DB에 저장하는 메소드
+     * @param td 매수 주식 이름, 수량의 정보를 담은 TradeData
      */
     public static void createBuyList(TradeData td, String type) {
 
+
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        PreparedStatement pstat = null;
+
         try {
 
-            File file = new File(TradeData.FILEPATH);
+            con = DBUtil.open();
+            st = con.createStatement();
 
-            if (!file.exists()) {
-                file.createNewFile();
+            String sql = "SELECT NVL(MAX(STOCK_SEQ),0) AS MAX FROM TBLSTOCK";
+            rs = st.executeQuery(sql);
+
+            int stockSeq = 0;
+
+            if(rs.next()) {
+                stockSeq = rs.getInt("MAX");
             }
 
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            sql = "SELECT COUNT(*) AS CNT FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            rs = st.executeQuery(sql);
 
-            String line = null;
+            int cnt = 0;
 
-            String content = "";
+            if(rs.next()) {
+                cnt = rs.getInt("CNT");
+            }
 
-            while ((line = br.readLine()) != null) {
+            if(cnt == 0) {
+                sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+                rs = st.executeQuery(sql);
 
-                String[] temp = line.split("■");
-
-                if (temp[0].equals(td.getStockName())) {
-                    int volume = Integer.parseInt(temp[1]) + Integer.parseInt(td.getVolume());
-                    content += td.getStockName() + "■" + volume + "\n";
-
-                } else {
-                    content += line + "\n";
+                int orgVolume = 0;
+                if(rs.next()) {
+                    orgVolume = rs.getInt("VOLUME");
                 }
 
-            }
-            br.close();
+                int volumeSum = orgVolume + Integer.parseInt(td.getVolume());
 
-            if (!content.contains(td.getStockName())) {
-                content += String.format("%s■%s\n", td.getStockName(), td.getVolume());
-            }
+                sql = "UPDATE TBLSTOCK SET VOLUME=? WHERE STOCKNAME=?";
+                pstat = con.prepareStatement(sql);
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(content);
-            bw.close();
+                pstat.setInt(1, volumeSum);
+                pstat.setString(2, td.getStockName());
+
+                pstat.executeUpdate();
+
+            } else {
+                sql = "INSERT INTO TBLSTOCK VALUES(?,?,?,?)";
+                pstat = con.prepareStatement(sql);
+
+                pstat.setInt(1, stockSeq+1);
+                pstat.setInt(2, Integer.parseInt(Login.loginUser.getNo()));
+                pstat.setString(3, td.getStockName());
+                pstat.setInt(4, Integer.parseInt(td.getVolume()));
+
+                pstat.executeUpdate();
+
+            }
 
             Member.updateAccountInfo(td, type);
+
+            rs.close();
+            st.close();
+            pstat.close();
+            con.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,47 +289,66 @@ public class TradeData {
 
     }
 
+
     /**
-     * 매도한 주식정보를 매수 정보가 들어있는 텍스트파일에서 지우는 메소드
+     * 매도한 주식정보를 매수 정보가 들어있는 DB에서 지우는 메소드
      */
     public static void removeBuyList(TradeData td, String type) {
 
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        PreparedStatement pstat = null;
+
         try {
 
-            File file = new File(TradeData.FILEPATH);
+            con = DBUtil.open();
+            st = con.createStatement();
 
-            if (!file.exists()) {
-                file.createNewFile();
+            //보유 수량 확인
+            String sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            rs = st.executeQuery(sql);
+
+            int orgVolume = -1;
+
+            if(rs.next()) {
+                orgVolume = rs.getInt("VOLUME");
             }
 
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            //매도할 주식 레코드 삭제
+            sql = "DELETE FROM TBLSTOCK WHERE STOCK_NAME="+td.getStockName();
+            pstat = con.prepareStatement(sql);
 
-            String line = null;
+            pstat.executeUpdate();
 
-            String content = "";
+            //남은 수량이 0이 아니면(0 초과) 남은 수량만큼 다시 insert
+            int remains = orgVolume - Integer.parseInt(td.getVolume());
 
-            while ((line = br.readLine()) != null) {
+            if(remains > 0) {
 
-                String[] temp = line.split("■");
+                sql = "SELECT NVL(MAX(STOCK_SEQ),0) AS MAX FROM TBLSTOCK";
+                rs = st.executeQuery(sql);
 
-                if (temp[0].equals(td.getStockName())) {
-                    int volume = Integer.parseInt(temp[1]) - Integer.parseInt(td.getVolume());
-                    content += td.getStockName() + "■" + volume + "\n";
+                int stockSeq = 0;
 
-                } else {
-                    content += line + "\n";
+                if(rs.next()) {
+                    stockSeq = rs.getInt("MAX");
                 }
 
-            }
-            br.close();
+                sql = "INSERT INTO TBLSTOCK VALUES(?,?,?,?)";
+                pstat = con.prepareStatement(sql);
 
-            if (!content.contains(td.getStockName())) {
-                content += String.format("%s■%s\n", td.getStockName(), td.getVolume());
+                pstat.setInt(1, stockSeq+1);
+                pstat.setInt(2, Integer.parseInt(Login.loginUser.getNo()));
+                pstat.setString(3, td.getStockName());
+                pstat.setInt(4, remains);
+
             }
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(content);
-            bw.close();
+            rs.close();
+            st.close();
+            pstat.close();
+            con.close();
 
             Member.updateAccountInfo(td, type);
 

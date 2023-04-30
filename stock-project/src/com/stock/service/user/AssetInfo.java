@@ -1,7 +1,6 @@
 package com.stock.service.user;
 
 
-import java.io.File;
 import java.util.Scanner;
 
 import com.stock.service.signup.Login;
@@ -14,11 +13,6 @@ import com.stock.view.MyStockCheck;
  *
  */
 public class AssetInfo {
-	
-	private final static String BUYLISTPATH = ".\\dat\\tradinghistory\\" + Login.loginUser.getId() + "\\buyList.txt";
-	private final static String HISTORYPATH = ".\\dat\\tradinghistory\\" + Login.loginUser.getId() + "\\history.txt";
-	private final static File BUYLIST = new File(BUYLISTPATH);
-	private final static File HISTORY = new File(HISTORYPATH);
 	
 	/**
 	 * 1. 자산 정보 조회
@@ -51,7 +45,7 @@ public class AssetInfo {
 		System.out.println();
 		System.out.println("\t\t\t\t\t\t\t=============================================================================");
 		System.out.println("\t\t\t\t\t\t\t\t\t\t\t[종목별 정보 조회] ");
-		System.out.println("\t\t\t\t\t\t\t=============================================================================");		
+		System.out.println("\t\t\t\t\t\t\t=============================================================================");
 		System.out.println("\t\t\t\t\t\t\t종목명\t\t보유수량\t\t매입가(원)\t\t평가손익(원)\t　　　　수익률(%)");
 		System.out.println("\t\t\t\t\t\t\t=============================================================================");
 		

@@ -1,9 +1,5 @@
 package com.stock.service.user;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Scanner;
@@ -19,10 +15,6 @@ import com.stock.service.signup.Login;
  */
 public class AssetReset {
 
-    private final static String BUYLISTPATH = ".\\dat\\tradinghistory\\" + Login.loginUser.getId() + "\\buyList.txt";
-    private final static String HISTORYPATH = ".\\dat\\tradinghistory\\" + Login.loginUser.getId() + "\\history.txt";
-    private final static File BUYLIST = new File(BUYLISTPATH);
-    private final static File HISTORY = new File(HISTORYPATH);
 
     /**
      * [3. 자산 초기화] 메뉴 UI를 출력하는 클래스
@@ -105,19 +97,19 @@ public class AssetReset {
      * 총자산, 가용자산을 초기값으로 되돌리는 메소드
      */
     private static void readUserList() {
-        
+
         Connection con = null;
         PreparedStatement pstat = null;
-        
+
         try {
-            
+
             con = DBUtil.open();
-            
+
             String sql = "UPDATE TBLACCOUNT SET TOTALACCOUNT=10000000, AVAILACCOUNT=10000000 WHERE USER_SEQ = ?";
             pstat = con.prepareStatement(sql);
-            
+
             pstat.setInt(1, Integer.parseInt(Login.loginUser.getNo()));
-            
+
             pstat.close();
             con.close();
 
@@ -127,47 +119,51 @@ public class AssetReset {
     }
 
     /**
-     * 자산 초기화 시 매수/매도 내역이 적혀있는 txt 파일을 함께 초기화하는 메소드
+     * 자산 초기화 시 매수/매도 내역이 적혀있는 거래 내역을 DB에서 삭제하는 메소드
      */
     private static void resetHistory() {
 
+        Connection con = null;
+        PreparedStatement pstat = null;
+
         try {
 
-            if (HISTORY.exists()) {
+            con = DBUtil.open();
 
-                BufferedWriter bw = new BufferedWriter(new FileWriter(HISTORY));
-                String txt = "";
+            String sql = "DELETE FROM TBLTRADING WHERE USER_SEQ="+Login.loginUser.getNo();
+            pstat = con.prepareStatement(sql);
 
-                bw.write(txt);
+            pstat.executeUpdate();
 
-                bw.close();
+            pstat.close();
+            con.close();
 
-            }
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 자산 초기화 시 보유 종목의 수량이 적혀있는 txt 파일을 함께 초기화하는 메소드
+     * 자산 초기화 시 보유 종목의 수량을 DB에서 삭제하는 메소드
      */
     private static void resetBuyList() {
 
+        Connection con = null;
+        PreparedStatement pstat = null;
+
         try {
 
-            if (BUYLIST.exists()) {
+            con = DBUtil.open();
 
-                BufferedWriter bw = new BufferedWriter(new FileWriter(BUYLIST));
-                String txt = "";
+            String sql = "DELETE FROM TBLSTOCK WHERE USER_SEQ="+Login.loginUser.getNo();
+            pstat = con.prepareStatement(sql);
 
-                bw.write(txt);
+            pstat.executeUpdate();
 
-                bw.close();
+            pstat.close();
+            con.close();
 
-            }
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
