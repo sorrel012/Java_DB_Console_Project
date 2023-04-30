@@ -308,7 +308,7 @@ public class TradeData {
             st = con.createStatement();
 
             //보유 수량 확인
-            String sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            String sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME='"+td.getStockName()+"'";
             rs = st.executeQuery(sql);
 
             int orgVolume = -1;
@@ -318,7 +318,7 @@ public class TradeData {
             }
 
             //매도할 주식 레코드 삭제
-            sql = "DELETE FROM TBLSTOCK WHERE STOCK_NAME="+td.getStockName();
+            sql = "DELETE FROM TBLSTOCK WHERE STOCK_NAME='"+td.getStockName()+"'";
             pstat = con.prepareStatement(sql);
 
             pstat.executeUpdate();
