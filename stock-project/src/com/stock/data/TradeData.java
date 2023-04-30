@@ -318,7 +318,7 @@ public class TradeData {
             }
 
             //매도할 주식 레코드 삭제
-            sql = "DELETE FROM TBLSTOCK WHERE STOCK_NAME='"+td.getStockName()+"'";
+            sql = "DELETE FROM TBLSTOCK WHERE STOCKNAME='"+td.getStockName()+"'";
             pstat = con.prepareStatement(sql);
 
             pstat.executeUpdate();
