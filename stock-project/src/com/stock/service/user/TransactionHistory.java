@@ -32,7 +32,7 @@ public class TransactionHistory {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-            String sql = "SELECT TRADDATE, STOCKNAME, SORT, QUANTITY, TOTALPRICE FROM TBLTRADING WHERE USER_SEQ="+Login.loginUser.getNo();
+            String sql = "SELECT TRUNC(TRADDATE) AS TRADDATE, STOCKNAME, SORT, QUANTITY, TOTALPRICE FROM TBLTRADING WHERE USER_SEQ="+Login.loginUser.getNo();
             rs = st.executeQuery(sql);
 
             while(rs.next()) {
