@@ -53,7 +53,7 @@ public class RegistrationService {
                 int totalAccount = Integer.parseInt(member.getMoney());
                 int availAccount = Integer.parseInt(member.getAvailableAssets());
                 
-                String sql = "INSERT INTO TBLMEMBER VALUES(?,?,?,?,?,?)";
+                String sql = "INSERT INTO TBLUSER VALUES(?,?,?,?,?,?,?)";
                 pstat = con.prepareStatement(sql);
                 
                 pstat.setInt(1, no);
