@@ -194,6 +194,8 @@ public class TradeData {
             pstat.setInt(6, td.getTotalPrice());
             pstat.setDate(7, sqlDate);
             pstat.setString(8, type);
+            
+            pstat.executeUpdate();
 
             System.out.printf("\t\t\t\t\t\t\t\t%s가 완료되었습니다.\n", type);
             
@@ -215,7 +217,6 @@ public class TradeData {
      */
     public static void createBuyList(TradeData td, String type) {
 
-
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
@@ -235,17 +236,17 @@ public class TradeData {
                 stockSeq = rs.getInt("MAX");
             }
 
-            sql = "SELECT COUNT(*) AS CNT FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            sql = "SELECT COUNT(*) AS CNT FROM TBLSTOCK WHERE STOCKNAME='"+td.getStockName()+"'";
             rs = st.executeQuery(sql);
 
-            int cnt = 0;
+            int cnt = -1;
 
             if(rs.next()) {
                 cnt = rs.getInt("CNT");
             }
 
-            if(cnt == 0) {
-                sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            if(cnt != 0) {
+                sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME='"+td.getStockName()+"'";
                 rs = st.executeQuery(sql);
 
                 int orgVolume = 0;
@@ -276,13 +277,14 @@ public class TradeData {
 
             }
 
-            Member.updateAccountInfo(td, type);
 
             rs.close();
             st.close();
             pstat.close();
             con.close();
 
+            Member.updateAccountInfo(td, type);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
