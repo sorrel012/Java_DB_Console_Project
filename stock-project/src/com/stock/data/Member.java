@@ -192,7 +192,7 @@ public static List<Member> createMember() {
                  String id = rs.getString("ID");
                  String pw = rs.getString("PW");
                  String tel = rs.getString("TEL");
-                 String birthday = rs.getString("BIRTH");
+                 String birthday = rs.getString("BIRTH").substring(0, 11);
                  String email = rs.getString("EMAIL");
 
                  tmpUserList.add(no);
@@ -279,7 +279,7 @@ public static List<Member> createMember() {
 
          try {
 
-             String targetId = Login.loginUser.getId(); //멤버 고유번호
+             String no = Login.loginUser.getNo(); //멤버 고유번호
              int newAmount = 0; //가용자산
              int totalAmount = 0; //총자산
 
@@ -301,7 +301,7 @@ public static List<Member> createMember() {
 
              pstat.setInt(1, totalAmount);
              pstat.setInt(2, newAmount);
-             pstat.setInt(3, Integer.parseInt(targetId));
+             pstat.setInt(3, Integer.parseInt(no));
              
              pstat.close();
              con.close();
