@@ -89,14 +89,14 @@ public class Menu {
         System.out.println();
 
         System.out.println("\t\t\t\t\t\t\t\t▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t　　　　< My Stock - 자산 확인 >\t\t\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t1. 자산 정보 조회\t\t3. 자산 초기화\t\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t2. 종목별 정보 조회\t\t4. 뒤로가기\t\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t(0번 입력: 종료)\t█");
-        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t█");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t　　　　< My Stock - 자산 확인 >\t\t\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t1. 자산 정보 조회\t\t3. 자산 초기화\t\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t2. 종목별 정보 조회\t4. 뒤로가기\t\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t(0번 입력: 종료)\t\t      █");
+        System.out.println("\t\t\t\t\t\t\t\t█\t\t\t\t\t\t\t\t\t      █");
         System.out.println("\t\t\t\t\t\t\t\t▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀");
         System.out.println();
 
