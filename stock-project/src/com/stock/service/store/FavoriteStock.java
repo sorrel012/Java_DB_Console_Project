@@ -24,7 +24,7 @@ public class FavoriteStock {
         System.out.println("\t\t\t\t\t\t\t\t\t\t\t　　　[My Stock - 관심 종목]");
         System.out.println("\t\t\t\t\t\t===================================================================================================");
         System.out.println();
-        System.out.println("\t\t\t\t\t\t　[종목명]\t\t\t[현재가]\t\t[등락률]\t\t[거래량]\t\t[ PER ]\t\t[ ROE ]");
+        System.out.println("\t\t\t\t\t\t　[종목명]\t\t[현재가]\t\t[등락률]\t\t[거래량]\t\t[ PER ]\t\t[ ROE ]");
 
         printMyStockList();
 
