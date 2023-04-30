@@ -89,7 +89,7 @@ public class TradeValidator {
             con = DBUtil.open();
             st = con.createStatement();
 
-            String sql = "SELECT COUNT(*) AS CNT FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            String sql = "SELECT COUNT(*) AS CNT FROM TBLSTOCK WHERE STOCKNAME='"+td.getStockName()+"'";
             rs = st.executeQuery(sql);
 
             int cnt = 0;
@@ -130,7 +130,7 @@ public class TradeValidator {
             con = DBUtil.open();
             st = con.createStatement();
 
-            String sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME="+td.getStockName();
+            String sql = "SELECT VOLUME FROM TBLSTOCK WHERE STOCKNAME='"+td.getStockName()+"'";
             rs = st.executeQuery(sql);
 
             int volume = 0;
