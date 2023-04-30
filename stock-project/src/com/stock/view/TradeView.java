@@ -2,7 +2,6 @@ package com.stock.view;
 
 import java.util.Scanner;
 
-import com.stock.data.Member;
 import com.stock.data.TradeData;
 import com.stock.service.signup.Login;
 import com.stock.service.user.TradeValidator;
@@ -25,8 +24,6 @@ public class TradeView {
 		System.out.println();
 		System.out.println();
 		System.out.println("\t\t\t\t\t\t\t\t\t\t\t[매수 및 매도]");
-		System.out.println("\t\t\t\t\t\t\t\t==========================================================");
-		System.out.println("\t\t\t\t\t\t\t\t가용자산: "); // Login.loginUser.getMoney()
 		System.out.println("\t\t\t\t\t\t\t\t==========================================================");
 		System.out.println("\t\t\t\t\t\t\t\t1. 매수");
 		System.out.println("\t\t\t\t\t\t\t\t2. 매도");
@@ -145,7 +142,7 @@ public class TradeView {
 			System.out.println();
 			System.out.println("\t\t\t\t\t\t\t\t진행하시겠습니까? Y: 1, N: 2 입력");
 			System.out.println("\t\t\t\t\t\t\t\t==========================================================");
-			System.out.printf("\t\t\t\t\t\t\t\t매도 후 총 자산 금액: %,d\n", Login.loginUser.getMoney());			
+			System.out.printf("\t\t\t\t\t\t\t\t매도 후 총 자산 금액: %,d\n", Login.loginUser.getMoney());
 			System.out.printf("\t\t\t\t\t\t\t\t매도 후 총 가용 금액: %,d\n", Login.loginUser.getAvailableAssets() + td.getTotalPrice());
 			System.out.println("\t\t\t\t\t\t\t\t==========================================================");
 			System.out.println();
