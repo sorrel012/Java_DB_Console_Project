@@ -164,7 +164,7 @@ public class SearchDetail {
 			chooseUI();
 			
 		} else if(check == 1) {
-			List<String> info = result.get(SearchDetail.userNum - 1); //TODO
+			List<String> info = result.get(SearchDetail.userNum - 1);
 			printDetailInfo(info);
 			userAdditionalInput();
 			

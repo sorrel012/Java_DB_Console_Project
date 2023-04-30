@@ -116,7 +116,7 @@ public class AssetInfoDetail {
 
                 int c = (Integer.parseInt(rateOfReturn(stockName).replace(",",""))*volume);	//현재가*보유수량
                 int d = checkCategory(stockName);	//매입가
-
+                
                 System.out.printf("\t\t\t\t\t\t\t%s\t\t%3s\t\t%,7d\t\t%,7d\t\t　　　　%6.2f%%\n"
                         , stockName						//종목명
                         , volume						//보유수량
@@ -203,7 +203,7 @@ public class AssetInfoDetail {
                 }
             }
         }
-
+        
         return price;
 
     }
@@ -234,7 +234,7 @@ public class AssetInfoDetail {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return nowPrice;
     }
 
