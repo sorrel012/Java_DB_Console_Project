@@ -344,6 +344,8 @@ public class TradeData {
                 pstat.setInt(2, Integer.parseInt(Login.loginUser.getNo()));
                 pstat.setString(3, td.getStockName());
                 pstat.setInt(4, remains);
+                
+                pstat.executeUpdate();
 
             }
 
