@@ -108,6 +108,8 @@ public class StockPriceInfo {
         
         try {
             
+            extractRanking();
+            
             con = DBUtil.open();
             st = con.createStatement();
             
@@ -117,7 +119,7 @@ public class StockPriceInfo {
             System.out.println(
                     "\t\t\t\t========================================================================================================================\n");
 
-            System.out.println("\t\t\t\t[순위]\t[종목명]\t\t\t[현재가]\t\t[등락률]\t\t[거래량]\t\t[PER]\t\t[ROE]");
+            System.out.println("\t\t\t\t   [순위]\t[종목명]\t\t\t\t[현재가]\t\t[등락률]\t\t[거래량]\t\t[PER]\t\t[ROE]");
 
             int rank = 1;
             while (rs.next()) {
@@ -130,10 +132,9 @@ public class StockPriceInfo {
                     name = rs.getString("STOCKNAME");
                 }
 
-                System.out.printf("\t\t\t\t%3s\t%-18s\t%-8s\t%-10s\t%-8s\t%-8s\t%-8s", rank++ + "", name, rs.getString(2),
-                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
-
-                if (rs.getString("STOCKNAME").equals("10")) {
+                System.out.printf("\t\t\t\t   %3s\t\t%-23s\t%-8s\t%-10s\t%-8s\t%-8s\t%-8s\n", rank++ + "", name, rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
+                if (rank == 11) {
                     break;
                 }
                 
