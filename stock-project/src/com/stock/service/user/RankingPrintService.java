@@ -227,7 +227,7 @@ public class RankingPrintService {
         Integer totalAssets =  assetsEntryList.get(0).getValue();
         System.out.printf("\t\t\t\t\t\t\t\t   %2d\t\t\t%s\t%,20d\n" , 1, makeUserIdName(no), totalAssets);
 
-        for(int i = 1; i < 10; i++) {
+        for(int i = 1; i <= 10; i++) {
 
             no = assetsEntryList.get(i).getKey();
             totalAssets =  assetsEntryList.get(i).getValue();
