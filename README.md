@@ -53,7 +53,7 @@
 <img src="https://user-images.githubusercontent.com/115568532/235355374-ccbaa01f-4a75-49c8-bd91-b6a271dba3b3.png" width="550" height="300">
 
 
-### 4. 랭킹 출력
+### 4. 랭킹 조회
 <img src="https://user-images.githubusercontent.com/115568532/235355846-d8e68222-8232-4e57-bcc6-53ca9cb09fe6.png" width="550" height="300">
 
 
