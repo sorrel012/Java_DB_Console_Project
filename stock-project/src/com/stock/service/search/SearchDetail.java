@@ -73,7 +73,7 @@ public class SearchDetail {
 		
 		System.out.printf("\t\t\t\t\t\t\t\t%8s : %s\t\t\t%7s : %s\n", "[현재가]", info.get(2), "[PER]", info.get(5));
 		System.out.printf("\t\t\t\t\t\t\t\t%8s : %s\t\t\t%6s : %s\n", "[등락률(%)]", info.get(3), "[거래량]",info.get(4));
-		System.out.println("\n\t\t\t\t\t\t\t\t*: 관심 종목 등록\t\t  #: 매수\t\t(0번 입력: 메인화면으로 이동)");
+		System.out.println("\n\t\t\t\t\t\t\t\t*: 관심 종목 등록\t\t  #: 매수\t       (0번 입력: 메인화면으로 이동)");
 		System.out.println("\t\t\t\t\t\t\t==================================================================================");
 				
 	}

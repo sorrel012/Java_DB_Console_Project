@@ -60,7 +60,7 @@ public class StockPriceInfo {
 
     }// UI
 
-    private static void extractRanking() {
+    public static void extractRanking() {
 
         Connection con = null;
         Statement st = null;
@@ -161,8 +161,8 @@ public class StockPriceInfo {
 
         // 시세정보 메뉴에서 입력값받는 곳
         while (loop) {
+            
             sel = scan.nextLine();
-            extractRanking();
 
             if (sel.equals("0")) {
 

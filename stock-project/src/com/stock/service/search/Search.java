@@ -83,7 +83,7 @@ public class Search {
 
         }
 
-        System.out.println("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t   (0번 입력: 메인화면으로 이동)");
+        System.out.println("\n\t\t\t\t\t\t\t\t\t\t\t\t\t       (0번 입력: 메인화면으로 이동)");
         System.out.println("\t\t\t\t\t\t\t==================================================================================");
 
     }
