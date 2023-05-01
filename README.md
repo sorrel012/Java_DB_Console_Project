@@ -38,7 +38,7 @@
 <img src="https://user-images.githubusercontent.com/115568532/235356341-470eda8d-0515-4cb0-9027-a598d6b10c16.png" width="550" height="750">
 
 
-### 2. 종목 검색 및 관심 종목 등록
+### 2. 종목 검색
 
 <img src="https://user-images.githubusercontent.com/115568532/235355109-2fec18b6-9fc8-45bd-8431-e86b324f5168.png" width="550" height="450">
 <img src="https://user-images.githubusercontent.com/115568532/235355113-c0ff18ff-002e-45a9-a9af-a414849febe6.png" width="550" height="550">
