@@ -71,19 +71,19 @@ public class StockPriceInfo {
             st = con.createStatement();
             
             String sql = "create or replace view vwKospiRise as "
-                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(SUBSTR(rate, 2)) desc";
+                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
             st.executeUpdate(sql);
             
             sql = "create or replace view vwKospiFall as "
-                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(SUBSTR(rate, 2)) desc";
+                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
             st.executeUpdate(sql);
             
             sql = "create or replace view vwKosdaqRise as "
-                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(SUBSTR(rate, 2)) desc";
+                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
             st.executeUpdate(sql);
             
             sql = "create or replace view vwKosdaqFall as "
-                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(SUBSTR(rate, 2)) desc";
+                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
             st.executeUpdate(sql);
             
             st.close();
@@ -130,7 +130,7 @@ public class StockPriceInfo {
                     name = rs.getString("STOCKNAME");
                 }
 
-                System.out.printf("\t\t\t\t   %3s\t\t%-23s\t%-8s\t%-10s\t%-8s\t%-8s\t%-8s\n", rank++ + "", name, rs.getString(3),
+                System.out.printf("\t\t\t\t   %3s\t\t%-15s  \t\t%-10s\t%-15s\t%-8s\t%-8s\t%-8s\n", rank++ + "", name, rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
                 if (rank == 11) {
                     break;
