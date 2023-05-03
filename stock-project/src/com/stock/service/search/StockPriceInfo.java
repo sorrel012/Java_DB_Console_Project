@@ -60,42 +60,6 @@ public class StockPriceInfo {
 
     }// UI
 
-    public static void extractRanking() {
-
-        Connection con = null;
-        Statement st = null;
-
-        try {
-            
-            con = DBUtil.open();
-            st = con.createStatement();
-            
-            String sql = "create or replace view vwKospiRise as "
-                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
-            st.executeUpdate(sql);
-            
-            sql = "create or replace view vwKospiFall as "
-                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
-            st.executeUpdate(sql);
-            
-            sql = "create or replace view vwKosdaqRise as "
-                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
-            st.executeUpdate(sql);
-            
-            sql = "create or replace view vwKosdaqFall as "
-                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
-            st.executeUpdate(sql);
-            
-            st.close();
-            con.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-    
-
     /**
      * 파일에서 코스피,코스닥의 시세정보의 상승,하락 Top10 추출하는 메소드
      * @param path 코스피,코스닥의 상승,하락 각각의 종류를 입력받는 곳

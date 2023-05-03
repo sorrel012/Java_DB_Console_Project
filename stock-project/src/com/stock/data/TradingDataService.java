@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -31,6 +32,7 @@ public class TradingDataService {
             deleteStockData();
             storeStockData(KOSPI, 41);
             storeStockData(KOSDAQ, 33);
+            extractRanking();
           
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,6 +170,44 @@ public class TradingDataService {
         st.close();
         con.close();
         
+    }
+    
+    /**
+     * 코스피, 코스닥 시세에서 상승률/하락률을 기준으로 정렬하여 view를 생성하는 메소드
+     */
+    private static void extractRanking() {
+
+        Connection con = null;
+        Statement st = null;
+
+        try {
+            
+            con = DBUtil.open();
+            st = con.createStatement();
+            
+            String sql = "create or replace view vwKospiRise as "
+                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
+            st.executeUpdate(sql);
+            
+            sql = "create or replace view vwKospiFall as "
+                    + "select * from tblkospi where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
+            st.executeUpdate(sql);
+            
+            sql = "create or replace view vwKosdaqRise as "
+                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '+') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
+            st.executeUpdate(sql);
+            
+            sql = "create or replace view vwKosdaqFall as "
+                    + "select * from tblkosdaq where (SUBSTR(rate, 1, 1) = '-') order by TO_NUMBER(REGEXP_REPLACE(rate, '[^0-9.]', '')) desc";
+            st.executeUpdate(sql);
+            
+            st.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     
 }
