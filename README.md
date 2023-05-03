@@ -68,24 +68,3 @@
 <img src="https://user-images.githubusercontent.com/115568532/235454246-5f99d58f-2ddc-4807-8da9-5bbc0a8392f0.png" width="550" height="600">
 <img src="https://user-images.githubusercontent.com/115568532/235454202-2b9431e2-991c-4634-8536-292e4a00fc2d.png" width="550" height="400">
 <img src="https://user-images.githubusercontent.com/115568532/235357429-faa9f81a-6d4e-4166-ace0-78e32832b74c.png" width="550" height="240">
-
-
-<br>
-
-
-## ✉ 소감
-
-### ✍ 팀 프로젝트
-처음으로 진행하는 프로젝트여서 프로젝트를 어떻게 해야 하는지를 몰라서 시작이 가장 어려웠다.<br>
-기능을 나누어 각자 구현하는 데 생긴 오류들보다 기능을 합치는 과정에서 더 많은 오류가 발생했다.<br>
-병합하다 보니 기능을 나누었더라도 내가 만든 메소드와 똑같은 메소드를 사용하는 팀원들도 있었고, 그 반대의 경우도 있었다.<br>
-구현을 시작하기 전에 더 많은 이야기를 나누었다면 조금 더 효율적으로 구현할 수 있었을 것 같다는 생각이 들었다.<br>
-
-### ✍ 개인 프로젝트
-DB를 배운 후 이전에 개발했던 Java Console Project를 DB와 연결했다.<br>
-Java만을 이용해서 개발할 때는 데이터를 txt 파일로 사용했었다.<br>
-txt 파일의 데이터들을 DB의 테이블들로 옮겼다.<br>
-JDBC를 이용하여 Oracle에 접근하도록 모든 구조를 바꾸려니 처음에는 힘들었다.<br>
-그렇지만 바꾸다보니 txt 파일에서 읽거나 txt 파일에 쓰는 것보다 DB를 활용하여 읽고 쓰는 것이 훨씬 간편했다.<br>
-DB의 필요성을 확실히 느낄 수 있었다.
-
